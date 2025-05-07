@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Donatur Qurban 2025</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+ <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+     
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+.page {
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#page1 {
+  height: 600px;
+  background-image: url('Banner1.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+#page2 {
+  height: 600px;
+  background-image: url('Banner2.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+    .container-custom {
+      flex: 1;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 600px;
+     
+    }
+
+    .total-box {
+      border-radius: 0.75rem;
+      padding: 1rem;
+      text-align: center;
+      margin-top: 10.2rem;
+    }
+.wrapper-donatur {
+  margin: 55px auto 0px auto; /* Atas, auto (kiri), bawah, auto (kanan) */
+  width: 280px;
+}
+    #donatur-list {
+  
+      font-size: 12px;
+      color: #333;
+      
+      border-radius: 0.75rem;
+     
+      padding: 0.2rem 1.8rem;
+      max-height: 380px; /* Ensure list fits within the viewport */
+      overflow-y: auto;
+      flex-grow: 1;
+      
+    }
+
+    #donatur-names li {
+      padding: 0.5em 0rem;
+      border-bottom: 1px dashed #ddd;
+    }
+
+    #donatur-names li:last-child {
+      border-bottom: none;
+    }
+    .total-rp {
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 800;
+  font-size: 1.6rem;
+}
+.notification-wrapper {
+  border-radius: 0.75rem;
+  bottom: 300px;
+  height: 26px; /* Tinggi tetap agar jadi area masker */
+  overflow: hidden; /* Penting! Membatasi animasi di dalam kotak */
+  position: relative;
+}
+    .notification-bar {
+  position: relative;
+  overflow: hidden;
+      text-align: center;
+      font-size: 0.6rem;
+      animation: fadeInOut 4s ease-in-out infinite;
+     
+      color: black;
+    }
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translateY(300px);
+  }
+  10% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  90% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-200px);
+  }
+}
+    .btn-sadaqah {
+      margin: 0 auto 0 auto;
+      width: 300px;
+      background: #fff;
+      color: #007BFF;
+      font-weight: bold;
+      border-radius: 0.75rem;
+      margin-top: 1rem;
+    }
+
+    .form-control {
+      border-radius: 0.5rem;
+    }
+
+   
+  </style>
+  <style>
+  canvas.confetti-canvas {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+    pointer-events: none;
+    z-index: 9999 !important; /* Pastikan lebih tinggi dari modal */
+  }
+
+</style>
+</head>
+<body>
+
+  <!-- Page 1 -->
+  <div class="page" id="page1">
+    <div class="container-custom">
+      <div class="total-box">
+      
+        <h4 class="total-rp"><i class="fa-solid fa-money-bill-wave"></i> Rp <span id="totalAmount">0</span></h4>
+      </div>
+
+      <div class="notification-wrapper">
+        <div class="notification-bar" id="notification"></div>
+      </div>
+
+     
+
+   
+
+      
+    </div>
+  </div>
+
+  <!-- Page 2 -->
+  <div class="page" id="page2">
+    <div class="container-custom">
+      <div class="wrapper-donatur">
+      <div id="donatur-list">
+        <ol id="donatur-names" class="mb-0"></ol>
+      </div>
+      </div>
+         <button class="btn btn-light btn-sadaqah" data-bs-toggle="modal" data-bs-target="#sadaqahModal">
+        <i class="fa-solid fa-paper-plane me-1"></i> Kirim sadaqah
+      </button>
+     <div class="text-center text-white mt-4 small">
+  Design by 
+  <a href="https://wa.me/62895339293938" target="_blank" style="color: #fff; text-decoration: none; font-weight:bold;">
+    WinartStudio
+  </a>
+</div>
+    </div>
+  </div>
+
+<!-- Modal sadaqah -->  
+<div class="modal fade" id="sadaqahModal" tabindex="-1" aria-labelledby="sadaqahModalLabel" aria-hidden="true">  
+  <div class="modal-dialog modal-dialog-centered">  
+    <div class="modal-content border-0 rounded-4 shadow-lg" style="background: linear-gradient(to bottom right, #ffffff, #f8f9fa);">  
+      <div class="modal-header border-0">  
+        <h5 class="modal-title w-100 text-center text-dark fw-bold fs-4" id="sadaqahModalLabel">  
+          Konfirmasi sadaqah  
+        </h5>  
+        <button type="button" class="btn-close position-absolute end-0 me-3 mt-3" data-bs-dismiss="modal" aria-label="Tutup"></button>  
+      </div>  
+      <div class="modal-body px-4">  
+        <div class="text-center mb-4">  
+          <div class="bg-white border border-2 rounded-3 p-3 shadow-sm position-relative">  
+            <div class="fw-semibold text-secondary mb-1">Transfer ke</div>  
+            <img src="Bnilogo.png" alt="Logo BNI" class="mb-3" style="height: 40px;">  
+            <div class="fs-5 fw-bold text-dark">BNI a.n. ANISA OCTAVIA</div>  
+            <div class="fs-4 fw-bold text-primary mt-1" id="rekeningNomor">
+              <span class="btn btn-light" onclick="salinRekening()">  
+                <i class="fa fa-copy"></i>  
+                0982444530  
+              </span>
+              <span id="message" class="text-success mt-2" style="display: none; font-size: 0.9rem;">Nomor rekening telah disalin!</span>
+            </div>  
+          </div>  
+        </div>  
+
+        <div class="alert alert-info rounded-3 shadow-sm" role="alert">
+          <span class="fw-bold text-danger">Note:</span> Jika sudah bersadaqah, kirimkan bukti SS ke  
+          <a href="https://wa.me/6285213067969" target="_blank" class="fw-bold text-success text-decoration-none">
+            WA Annisa Octavia (0852-1306-7969)
+          </a>  
+          agar divalidasi.
+        </div>
+
+        <!-- Input nama -->
+        <div class="mb-3">  
+          <label for="namaDonatur" class="form-label fw-semibold text-secondary">Nama Anda</label>  
+          <input type="text" class="form-control form-control-lg rounded-3 shadow-sm" id="namaDonatur" placeholder="Nama Kamu">  
+        </div>  
+
+        <!-- Input nominal donasi -->
+        <div class="mb-3">  
+          <label for="jumlahDonasi" class="form-label fw-semibold text-secondary">Nominal Sadaqah (Rp)</label>  
+       <input type="text" class="form-control form-control-lg rounded-3 shadow-sm" id="jumlahDonasi" placeholder="jumlah donasi" oninput="handleInputChange()">
+        </div>  
+      </div>
+      <div class="modal-footer border-0 px-4 pb-4">  
+        <button type="button" class="btn btn-primary w-100 py-3 fw-semibold fs-6 rounded-3 shadow" onclick="tambahDonatur()">
+          <i class="fa-solid fa-heart me-2"></i> Saya Sudah Bersadaqah
+        </button>
+      </div>  
+    </div>  
+  </div>  
+</div>
+<script>
+  function formatRupiah(input) {
+  let angka = input.value.replace(/[^\d]/g, "");
+  let formatted = angka.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  input.value = formatted;
+}
+  // Fungsi untuk menyalin nomor rekening ke clipboard dan menampilkan pesan
+  function salinRekening() {
+    const rekeningNomor = document.getElementById("rekeningNomor").innerText.trim(); // Ambil nomor rekening
+    navigator.clipboard.writeText(rekeningNomor) // Menyalin ke clipboard
+      .then(() => {
+        // Tampilkan pesan setelah berhasil menyalin
+        const message = document.getElementById("message");
+        message.style.display = "block"; // Menampilkan pesan
+        setTimeout(() => {
+          message.style.display = "none"; // Sembunyikan pesan setelah beberapa detik
+        }, 2000);
+      })
+      .catch(err => {
+        console.error("Gagal menyalin nomor rekening: ", err);
+      });
+  }
+</script>
+
+<!-- Modal Terima Kasih -->
+<div class="modal fade" id="thankYouModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-success text-white text-center rounded-4 p-4">
+      <div class="mb-3">
+        <!-- Ikon check-circle dengan animasi -->
+        <i class="fa fa-check-circle fa-5x mb-3 animate__animated animate__bounceIn"></i>
+      </div>
+      <h5 class="mb-3">Terima kasih!</h5>
+      <p id="thankYouMessage">Nama telah bersadaqah.</p>
+      <button class="btn btn-light mt-2" data-bs-dismiss="modal">Lihat Daftar Donatur</button>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script>
+<!-- Tambahkan link untuk mengimpor animasi -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+<script>
+  const defaultDonors = [
+    { nama: "Adzam", jumlah: 100000 },
+    { nama: "Deva", jumlah: 50000 },
+    { nama: "Nazla N.K.", jumlah: 50000 },
+    { nama: "Mumtaza", jumlah: 50000 },
+    { nama: "Hisyam", jumlah: 50000 },
+    { nama: "Zafran", jumlah: 200000 },
+    { nama: "Ghiza", jumlah: 50000 },
+    { nama: "Radin", jumlah: 50000 },
+    { nama: "Abizard K.", jumlah: 50000 },
+    { nama: "Biyan", jumlah: 100000 },
+    { nama: "Agam", jumlah: 100000 },
+    { nama: "Arsa", jumlah: 75000 },
+    { nama: "Arfan", jumlah: 75000 },
+    { nama: "Afzar", jumlah: 50000 },
+    { nama: "Ghania", jumlah: 50000 },
+    { nama: "Aryadana", jumlah: 50000 },
+    { nama: "Nazwa", jumlah: 50000 },
+    { nama: "Ikmal", jumlah: 50000 },
+    { nama: "Fayad", jumlah: 50000 },
+    { nama: "Shaeraa", jumlah: 50000 },
+    { nama: "Azam", jumlah: 50000 },
+    { nama: "Gazala", jumlah: 50000 },
+    { nama: "Asyifa", jumlah: 100000 },
+    { nama: "Alisha", jumlah: 100000 },
+    { nama: "Khumayra A.", jumlah: 50000 },
+    { nama: "Jasmine", jumlah: 50000 },
+    { nama: "Alya", jumlah: 50000 },
+    { nama: "Adlan", jumlah: 50000 },
+    { nama: "Diaz", jumlah: 50000 },
+    { nama: "Ibra", jumlah: 1000000 },
+    { nama: "Agra", jumlah: 100000 },
+    { nama: "Kaleya", jumlah: 50000 },
+    { nama: "Qiana", jumlah: 50000 },
+    { nama: "Yusuf", jumlah: 50000 },
+    { nama: "Ibrahim", jumlah: 50000 },
+    { nama: "Nadhir", jumlah: 100000 },
+    { nama: "Nashor", jumlah: 50000 },
+    { nama: "Aisyah", jumlah: 50000 },
+    { nama: "Ms Entin", jumlah: 200000 },
+    { nama: "Aina", jumlah: 50000 }
+  ];
+
+  let baseTotal = defaultDonors.reduce((sum, donor) => sum + donor.jumlah, 0);
+  let currentAnimation = null;
+
+  function formatRupiah(input) {
+    let angka = input.value.replace(/[^\d]/g, "");
+    let formatted = angka.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    input.value = formatted;
+  }
+
+  function handleInputChange() {
+    const input = document.getElementById("jumlahDonasi");
+    formatRupiah(input);
+
+    let tambahan = parseInt(input.value.replace(/\./g, "")) || 0;
+    let totalSementara = baseTotal + tambahan;
+
+    animateCountUp("totalAmount", totalSementara);
+  }
+
+  function animateCountUp(id, target, duration = 1000) {
+    const element = document.getElementById(id);
+
+    if (currentAnimation) clearInterval(currentAnimation);
+
+    let start = parseInt(element.innerText.replace(/\./g, "")) || 0;
+    const range = target - start;
+    const increment = range / (duration / 20);
+
+    currentAnimation = setInterval(() => {
+      start += increment;
+      if ((increment > 0 && start >= target) || (increment < 0 && start <= target)) {
+        start = target;
+        clearInterval(currentAnimation);
+      }
+      element.innerText = Math.floor(start).toLocaleString('id-ID');
+    }, 20);
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    animateCountUp("totalAmount", baseTotal);
+  });
+
+  let activeDonors = [...defaultDonors];
+  let shuffledQueue = shuffle([...activeDonors]);
+
+  document.addEventListener("DOMContentLoaded", () => {
+    renderDonors(0, activeDonors.length);
+    showNextNotification();
+    setInterval(showNextNotification, 4000);
+  });
+
+  function renderDonors(start, end) {
+    const list = document.getElementById("donatur-names");
+    for (let i = start; i < end && i < activeDonors.length; i++) {
+      const li = document.createElement("li");
+      li.textContent = activeDonors[i].nama;
+      list.appendChild(li);
+    }
+  }
+
+  function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
+
+  function showNextNotification() {
+    const notif = document.getElementById("notification");
+
+    if (shuffledQueue.length === 0) {
+      shuffledQueue = shuffle([...activeDonors]);
+    }
+
+    const nextDonor = shuffledQueue.shift();
+    notif.innerHTML = `✨ <strong>${nextDonor.nama}</strong> telah bersadaqah sebesar <strong>Rp${nextDonor.jumlah.toLocaleString('id-ID')}</strong> <span style="font-size: 0.8rem;">💸</span>`;
+  }
+
+function tambahDonatur() {
+  const namaInput = document.getElementById("namaDonatur");
+  const jumlahInput = document.getElementById("jumlahDonasi");
+  const nama = namaInput.value.trim();
+const jumlah = parseInt(jumlahInput.value.trim().replace(/\./g, ""));
+
+  if (nama && !isNaN(jumlah)) {
+    const newDonor = { nama, jumlah };
+
+    activeDonors.push(newDonor);
+    shuffledQueue.unshift(newDonor); // Donor baru langsung muncul di notifikasi berikutnya
+
+    const list = document.getElementById("donatur-names");
+    const li = document.createElement("li");
+    li.textContent = nama; // Hanya nama di list
+    list.insertBefore(li, list.firstChild);
+
+    // Reset form
+    namaInput.value = "";
+    jumlahInput.value = "";
+
+    // Tutup modal
+    const modal = bootstrap.Modal.getInstance(document.getElementById('sadaqahModal'));
+    modal.hide();
+
+    // Tampilkan pesan terima kasih
+    document.getElementById("thankYouMessage").innerHTML = `Terima kasih <strong>${nama}</strong> telah bersadaqah!`;
+    showConfetti();
+
+    const thankYouModal = new bootstrap.Modal(document.getElementById('thankYouModal'));
+    thankYouModal.show();
+  }
+}
+
+  function showConfetti() {
+    const count = 200;
+    const defaults = { origin: { y: 0.7 } };
+
+    function fire(particleRatio, opts) {
+      confetti(Object.assign({}, defaults, opts, {
+        particleCount: Math.floor(count * particleRatio),
+        ticks: 200,
+        zIndex: 9999
+      }));
+    }
+
+    fire(0.25, { spread: 26, startVelocity: 55 });
+    fire(0.2, { spread: 60 });
+    fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+    fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
+    fire(0.1, { spread: 120, startVelocity: 45 });
+
+    document.querySelectorAll("canvas").forEach(canvas => {
+      canvas.classList.add("confetti-canvas");
+    });
+  }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
