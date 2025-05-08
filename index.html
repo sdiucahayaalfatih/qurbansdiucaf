@@ -737,23 +737,40 @@ if (donutChart) {
   donutChart.style.background = warnaGradient;
 }
 }
+function getHeightByAmount(amount) {
+  if (amount >= 28000000) return 500;
+
+  // 22.000.000 – 28.999.999 (Kerbau): kelipatan 50.000 → return 330–499
+  if (amount >= 22000000) {
+    return 330 + Math.floor((amount - 22000000) / 50000);
+  }
+
+  // 4.000.000 – 21.999.999 (Kambing): kelipatan 100.000 → return 170–329
+  if (amount >= 4000000) {
+    return 170 + Math.floor((amount - 4000000) / 100000);
+  }
+
+  // Penyesuaian khusus di bawah 4.000.000
+  if (amount >= 3500000) return 165;
+  if (amount >= 3000000) return 160;
+  if (amount >= 2500000) return 175;
+  if (amount >= 1000000) return 170;
+  if (amount >= 500000) return 165;
+
+  return 0;
+}
 function animateProgressFill(total) {
   const progressFill = document.getElementById("progressFill");
   const progressPoints = document.querySelectorAll(".progress-point");
 
-  const targets = Array.from(progressPoints).map(point =>
-    parseInt(point.dataset.amount || "0")
-  );
-  const maxTarget = Math.max(...targets);
-
   const progressContainer = document.querySelector(".vertical-progress");
-  const totalHeight = progressContainer.clientHeight;
+  const maxHeight = progressContainer.clientHeight;
 
-  const percent = Math.min(total / maxTarget, 1);
-  const targetHeight = percent * totalHeight;
+  // Gunakan height aktual sesuai mapping
+  const targetHeight = getHeightByAmount(total);
 
   let currentHeight = 0;
-  const step = targetHeight / 60; // durasi kira-kira 1 detik (60 frame)
+  const step = targetHeight / 60;
 
   const interval = setInterval(() => {
     currentHeight += step;
@@ -764,18 +781,18 @@ function animateProgressFill(total) {
 
     progressFill.style.height = `${currentHeight}px`;
 
-    // Aktifkan titik yang sudah terlewati
+    // Aktifkan titik yang sudah dilewati
     progressPoints.forEach(point => {
       const amount = parseInt(point.dataset.amount || "0");
-      const pointHeight = (amount / maxTarget) * totalHeight;
+      const pointHeight = getHeightByAmount(amount);
       if (currentHeight >= pointHeight) {
         point.classList.add("active");
       } else {
         point.classList.remove("active");
       }
     });
-  }, 16); // ~60fps
-}
+  }, 16);
+  }
 // database
   const defaultDonors = [
   { nama: "Adzam", jumlah: 100000 },
