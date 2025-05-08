@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Donatur Qurban 2025</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+ <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@700;800&display=swap" rel="stylesheet">
+ <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+  
+     <!-- Tag Open Graph -->
+  <meta property="og:title" content="Qurban SDI UCAF 2025">
+  <meta property="og:description" content="SDIU Cahaya Al-Fatih menerima dan menyalurkan hewan qurban, bagi siapa saja yang ingin menginfaqkan sebagian rizkinya semoga Allah mudahkan segala urusannya">
+  <meta property="og:image" content="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlWkIrucWgj1tsQ_Txj3wyfJcdbnf5I6ocM9Yl5KKD3Cv0mtdgix8jDBrF&s=10">
+  <meta property="og:url" content="https://sdiucahayaalfatih.github.io/qurbansdiucaf/">
+  <meta property="og:type" content="website">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+     
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+.page {
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#page1 {
+  height: 600px;
+  background-image: url('Banner1.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+#page2 {
+  height: 600px;
+  background-image: url('Banner2.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+
+#page3 {
+  height: 700px;
+  background-image: url('Banner3.png');
+  
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+    .container-custom {
+      flex: 1;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 600px;
+     
+    }
+
+    .total-box {
+      border-radius: 0.75rem;
+      padding: 1rem;
+      text-align: center;
+      margin-top: 1rem;
+    }
+     .date-now {
+       position: relative;
+      margin: 0 auto 0 auto;
+      padding: 10px;
+      text-align: center;
+      top: 140px;
+    }
+  
+ .date-skrng {
+  font-size: 12px;
+  border-radius: 8px;
+  background:linear-gradient(135deg, #4e54c8, #8f94fb);
+  color: white;
+  padding: 3px 8px;
+  display: inline-block;
+    border: 2px solid white;
+}
+   .time-now {
+       position: relative;
+      margin: 0 auto 0 auto;
+      padding: 10px;
+      text-align: center;
+      margin: 0 auto;
+      left: 120px;
+    }
+   .time-skrng {
+  font-size: 12px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.1));
+  color: white;
+  padding: 3px 8px;
+  display: inline-block;
+ 
+}
+.wrapper-donatur {
+  margin: 55px auto 0px auto; /* Atas, auto (kiri), bawah, auto (kanan) */
+  width: 280px;
+}
+    #donatur-list {
+  
+      font-size: 12px;
+      color: #333;
+      
+      border-radius: 0.75rem;
+     
+      padding: 0.2rem 1.8rem;
+      max-height: 380px; /* Ensure list fits within the viewport */
+      overflow-y: auto;
+      flex-grow: 1;
+      
+    }
+
+    #donatur-names li {
+      padding: 0.5em 0rem;
+      border-bottom: 1px dashed #ddd;
+    }
+
+    #donatur-names li:last-child {
+      border-bottom: none;
+    }
+    .total-rp {
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 800;
+  font-size: 1.6rem;
+}
+.notification-wrapper {
+  border-radius: 0.75rem;
+  bottom: 300px;
+  height: 26px; /* Tinggi tetap agar jadi area masker */
+  overflow: hidden; /* Penting! Membatasi animasi di dalam kotak */
+  position: relative;
+}
+    .notification-bar {
+  position: relative;
+  overflow: hidden;
+      text-align: center;
+      font-size: 0.6rem;
+      animation: fadeInOut 4s ease-in-out infinite;
+     
+      color: black;
+    }
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translateY(300px);
+  }
+  10% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  90% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-200px);
+  }
+}
+    .btn-sadaqah {
+      margin: 0 auto 0 auto;
+      width: 300px;
+      background: #fff;
+      color: #007BFF;
+      font-weight: bold;
+      border-radius: 0.75rem;
+      margin-top: 1rem;
+    }
+
+    .form-control {
+      border-radius: 0.5rem;
+    }
+
+   
+  </style>
+  <style>
+  canvas.confetti-canvas {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+    pointer-events: none;
+    z-index: 9999 !important; /* Pastikan lebih tinggi dari modal */
+  }
+  
+  .progress-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  position: relative;
+  gap:30px;
+}
+
+
+.progress-notes {
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  color: white;
+  font-size: 14px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.note {
+  background-color: rgba(255,255,255,0.1);
+  padding: 10px;
+  border-radius: 10px;
+}
+  
+  .vertical-progress {
+  position: relative;
+  width: 120px;
+  height: 500px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.progress-line {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  background-color: white;
+  transform: translateX(-50%);
+  z-index: 1;
+  border-radius: 30px;
+}
+
+.progress-point {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.progress-point::before {
+  content: '';
+  width: 20px;
+  height: 20px;
+  background: green;
+  border: 4px solid white;
+  border-radius: 50%;
+  margin-bottom: 5px;
+}
+
+.progress-point.active::before {
+  background: linear-gradient(to top, red, orange); /* Warna terisi */
+  border-color: orange; /* Tambahan jika ingin ubah border */
+}
+
+/* Membuat ikon (emoji) berada di kiri */
+.icon {
+  font-size: 24px;
+  
+}
+
+/* Menyesuaikan hanya untuk label "Kambing" */
+.progress-point[data-amount="4000000"] .label {
+  left: 25px;
+  top: 10px;
+}
+/* Menyesuaikan label "Kerbau" */
+.progress-point[data-amount="22000000"] .label {
+  top: 10px; /* Geser sedikit ke atas */
+  left: 25px;
+}
+/* Menyesuaikan label "Sapi" */
+.progress-point[data-amount="28000000"] .label {
+  top: 10px; /* Atur sesuai kebutuhan */
+  left:25px;
+}
+/* Menyesuaikan label "0" */
+.progress-point[data-amount="0"] .label {
+  top: 10px; /* Atur nilai ini sesuai keinginan */
+  left:25px;
+}
+/* Membuat label berada di kanan */
+.label {
+  font-size: 12px;
+  text-align: center;
+  color: white;
+ font-weight:bold;
+  border-radius: 8px;
+  padding: 5px 10px;
+  position: absolute;
+  right: -30px; /* Posisi label di kanan */
+  top: 50%;
+  transform: translateY(-50%); /* Menjaga label di tengah vertikal */
+  z-index: 3;
+}
+
+.progress-fill {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 6px;
+  background-image: linear-gradient(to top, red, orange);
+  transform: translateX(-50%);
+  z-index: 1;
+  height: 0;
+  transition: height 0.1s linear; /* Smoothness saat diperbarui */
+}
+.donut-chart {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin: 10px auto;
+  border-radius: 50%;
+  background: conic-gradient(
+    #28a745 0%,
+    #ffc107 66%,
+    rgba(255, 255, 255, 0.1) 66% 100%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.donut-chart::before {
+  content: '';
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  background: rgba(0,0,0,0.5); /* Same as card background */
+  border-radius: 50%;
+  z-index: 1;
+}
+.donut-percentage {
+  position: absolute;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  z-index: 2;
+}
+</style>
+</head>
+<body>
+
+  <!-- Page 1 -->
+  <div class="page" id="page1">
+ <div class="time-now">
+  <p class="time-skrng" id="timeNow"></p>
+</div>
+   <div class="date-now">
+  <p class="date-skrng" id="dateElement"></p>
+</div>
+    <div class="container-custom">
+      
+      <div class="total-box">
+      
+        <h4 class="total-rp"><i class="fa-solid fa-money-bill-wave"></i> Rp <span id="totalAmount">0</span></h4>
+      </div>
+      
+      <div class="notification-wrapper">
+        <div class="notification-bar" id="notification"></div>
+      </div>
+
+     
+
+   
+
+      
+    </div>
+  </div>
+
+  <!-- Page 2 -->
+  <div class="page" id="page2">
+    <div class="container-custom">
+      <div class="wrapper-donatur">
+      <div id="donatur-list">
+        <ol id="donatur-names" class="mb-0"></ol>
+      </div>
+      </div>
+         <button class="btn btn-light btn-sadaqah" data-bs-toggle="modal" data-bs-target="#sadaqahModal">
+        <i class="fa-solid fa-paper-plane me-1"></i> Kirim sadaqah
+      </button>
+    
+    </div>
+  </div>
+<div class="page" id="page3">  
+  <div class="container-custom">  
+
+    <!-- Judul -->
+   <div class="text-center text-white mb-4 position-relative" style="font-size: 24px; font-family: 'Poppins', sans-serif; font-weight: 600; text-shadow: 1px 1px 3px black;">
+  <div style="display: flex; align-items: center; justify-content: center;">
+    <span style="flex: 1; height: 2px; background: white; margin-right: 10px;"></span>
+    <span style="white-space: nowrap;">
+      <i class="fa-solid fa-chart-line" style="margin-right: 8px;"></i> Progress Qurban
+    </span>
+    <span style="flex: 1; height: 2px; background: white; margin-left: 10px;"></span>
+  </div>
+</div>
+<div class="progress-wrapper">
+  <!-- Vertical Progress -->
+  <div class="vertical-progress">  
+    <div class="progress-point" data-amount="28000000">  
+      <div class="icon">🐄</div>  
+      <div class="label">Sapi</div>  
+    </div>  
+    <div class="progress-point" data-amount="22000000">  
+      <div class="icon">🐃</div>  
+      <div class="label">Kerbau</div>  
+    </div>  
+    <div class="progress-point" data-amount="4000000">  
+      <div class="icon">🐐</div>  
+      <div class="label">Kambing</div>  
+    </div>  
+    <div class="progress-point" data-amount="0">  
+      <div class="icon"></div>  
+      <div class="label">0</div>  
+    </div>  
+    <div class="progress-line"></div>  
+    <div class="progress-fill" id="progressFill"></div>  
+  </div>  
+<!-- Wrapper Container -->
+<!-- Wrapper Container -->
+<div class="wrapper-container" style="max-width: 600px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+
+  <!-- Kolom kanan: Catatan Qurban -->
+  <div class="card text-white mb-3 shadow" style="max-width: 200px; backdrop-filter: blur(8px); background-color: rgba(0, 0, 0, 0.5); border: none; font-size: 12px;">
+    <div class="card-header fw-bold border-0 d-flex align-items-center gap-2" style="background-color: transparent; border-bottom: 2px solid #fff; padding-bottom: 5px;">
+      <i class="fa-solid fa-notes-medical"></i> Catatan Qurban
+    </div>
+    <div class="card-body">
+      <p class="card-text mb-0" style="text-align: justify;">
+        Dengan niat tulus dan harapan besar, <strong>insyaAllah</strong> tahun ini kita menargetkan untuk berqurban <strong>sapi</strong>. Semoga Allah mudahkan segala urusan dan dicukupkan rezeki hingga cita-cita ini tercapai. Jika rezeki telah terkumpul, maka <strong>sapi</strong> akan menjadi wujud qurban terbaik tahun ini.
+      </p>
+    </div>
+  </div>
+
+  <!-- Card 2: Dana Terkumpul -->
+  <div class="card text-white shadow mt-3" style="max-width: 200px; backdrop-filter: blur(8px); background-color: rgba(0, 0, 0, 0.5); border: none; font-size: 12px;">
+    <div class="card-header fw-bold border-0 d-flex align-items-center gap-2" style="background-color: transparent; border-bottom: 2px solid white; padding-bottom: 5px;">
+      <i class="fa-solid fa-coins"></i> Dana Terkumpul
+    </div>
+    <div class="card-body text-center">
+      <!-- Donut Chart -->
+      <div class="donut-chart">
+        <div id="donutPercentage" class="donut-percentage">0%</div>
+      </div>
+      <p class="card-text mb-2" style="text-align: justify;">
+        Total: <strong id="totalDanaText">Rp 0</strong><br>
+      </p>
+      <div class="progress" style="height: 6px; background-color: rgba(255,255,255,0.1);">
+        <div id="progressBarHorizontal" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</div>
+
+  </div>  
+
+  <div class="text-center text-white small p-3">
+    Design by 
+    <a href="https://wa.me/62895339293938" target="_blank" style="color: #fff; text-decoration: none; font-weight:bold;">
+      WinartStudio
+    </a>
+  </div>
+</div>
+
+<!-- Modal sadaqah -->  
+<div class="modal fade" id="sadaqahModal" tabindex="-1" aria-labelledby="sadaqahModalLabel" aria-hidden="true">  
+  <div class="modal-dialog modal-dialog-centered">  
+    <div class="modal-content border-0 rounded-4 shadow-lg" style="background: linear-gradient(to bottom right, #ffffff, #f8f9fa);">  
+      <div class="modal-header border-0">  
+        <h5 class="modal-title w-100 text-center text-dark fw-bold fs-4" id="sadaqahModalLabel">  
+          Konfirmasi sadaqah  
+        </h5>  
+        <button type="button" class="btn-close position-absolute end-0 me-3 mt-3" data-bs-dismiss="modal" aria-label="Tutup"></button>  
+      </div>  
+      <div class="modal-body px-4">  
+        <div class="text-center mb-4">  
+          <div class="bg-white border border-2 rounded-3 p-3 shadow-sm position-relative">  
+            <div class="fw-semibold text-secondary mb-1">Transfer ke</div>  
+            <img src="Bnilogo.png" alt="Logo BNI" class="mb-3" style="height: 40px;">  
+            <div class="fs-5 fw-bold text-dark">BNI a.n. ANISA OCTAVIA</div>  
+            <div class="fs-4 fw-bold text-primary mt-1" id="rekeningNomor">
+              <span class="btn btn-light" onclick="salinRekening()">  
+                <i class="fa fa-copy"></i>  
+                0982444530  
+              </span>
+              <span id="message" class="text-success mt-2" style="display: none; font-size: 0.9rem;">Nomor rekening telah disalin!</span>
+            </div>  
+          </div>  
+        </div>  
+
+        <div class="alert alert-info rounded-3 shadow-sm" role="alert">
+          <span class="fw-bold text-danger">Note:</span> Jika sudah bersadaqah, kirimkan bukti SS ke  
+          <a href="https://wa.me/6285213067969" target="_blank" class="fw-bold text-success text-decoration-none">
+            WA Annisa Octavia (0852-1306-7969)
+          </a>  
+          agar divalidasi.
+        </div>
+
+        <!-- Input nama -->
+        <div class="mb-3">  
+          <label for="namaDonatur" class="form-label fw-semibold text-secondary">Nama Anda</label>  
+          <input type="text" class="form-control form-control-lg rounded-3 shadow-sm" id="namaDonatur" placeholder="Nama Kamu">  
+        </div>  
+
+        <!-- Input nominal donasi -->
+        <div class="mb-3">  
+          <label for="jumlahDonasi" class="form-label fw-semibold text-secondary">Nominal Sadaqah (Rp)</label>  
+       <input type="text" class="form-control form-control-lg rounded-3 shadow-sm" id="jumlahDonasi" placeholder="jumlah donasi" oninput="handleInputChange()">
+        </div>  
+      </div>
+      <div class="modal-footer border-0 px-4 pb-4">  
+        <button type="button" class="btn btn-primary w-100 py-3 fw-semibold fs-6 rounded-3 shadow" onclick="tambahDonatur()">
+          <i class="fa-solid fa-heart me-2"></i> Saya Sudah Bersadaqah
+        </button>
+      </div>  
+    </div>  
+  </div>  
+</div>
+<script>
+  function updateTime() {
+    const now = new Date();
+    let hours = now.getHours();
+    let minutes = now.getMinutes();
+    let seconds = now.getSeconds();
+
+    // Format waktu menjadi 2 digit
+    hours = hours < 10 ? '0' + hours : hours;
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    seconds = seconds < 10 ? '0' + seconds : seconds;
+
+    const timeString = `Pukul : ${hours}.${minutes}.${seconds}`;
+
+    // Update elemen dengan ID "timeNow"
+    document.getElementById('timeNow').textContent = timeString;
+  }
+
+  // Memperbarui waktu setiap detik
+  setInterval(updateTime, 1000);
+
+  // Menjalankan fungsi sekali saat halaman dimuat
+  updateTime();
+</script>
+<script>
+  
+  function formatRupiah(input) {
+  let angka = input.value.replace(/[^\d]/g, "");
+  let formatted = angka.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  input.value = formatted;
+}
+  // Fungsi untuk menyalin nomor rekening ke clipboard dan menampilkan pesan
+  function salinRekening() {
+    const rekeningNomor = document.getElementById("rekeningNomor").innerText.trim(); // Ambil nomor rekening
+    navigator.clipboard.writeText(rekeningNomor) // Menyalin ke clipboard
+      .then(() => {
+        // Tampilkan pesan setelah berhasil menyalin
+        const message = document.getElementById("message");
+        message.style.display = "block"; // Menampilkan pesan
+        setTimeout(() => {
+          message.style.display = "none"; // Sembunyikan pesan setelah beberapa detik
+        }, 2000);
+      })
+      .catch(err => {
+        console.error("Gagal menyalin nomor rekening: ", err);
+      });
+  }
+</script>
+
+<!-- Modal Terima Kasih -->
+<div class="modal fade" id="thankYouModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-success text-white text-center rounded-4 p-4">
+      <div class="mb-3">
+        <!-- Ikon check-circle dengan animasi -->
+        <i class="fa fa-check-circle fa-5x mb-3 animate__animated animate__bounceIn"></i>
+      </div>
+      <h5 class="mb-3">Terima kasih!</h5>
+      <p id="thankYouMessage">Nama telah bersadaqah.</p>
+      <button class="btn btn-light mt-2" data-bs-dismiss="modal">Lihat Daftar Donatur</button>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script>
+<!-- Tambahkan link untuk mengimpor animasi -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+<script>
+function updateCardDana(total, target = 28000000) {
+  const percent = Math.min((total / target) * 100, 100);
+  const formattedTotal = total.toLocaleString('id-ID');
+
+  const totalText = document.getElementById("totalDanaText");
+  if (totalText) totalText.innerText = `Rp ${formattedTotal}`;
+
+  const donut = document.getElementById("donutPercentage");
+  if (donut) donut.innerText = `${Math.round(percent)}%`;
+
+  const bar = document.getElementById("progressBarHorizontal");
+  if (bar) {
+    bar.style.width = `${percent}%`;
+    bar.setAttribute("aria-valuenow", Math.round(percent));
+  }
+
+  // Update warna donut chart secara dinamis
+ const donutChart = document.querySelector(".donut-chart");
+if (donutChart) {
+  const progress = percent; // dari total / target
+  const warnaGradient = `conic-gradient(
+    from 0deg,
+    green 0%,
+    yellow ${progress / 2}%,
+    red ${progress}%,
+    rgba(255,255,255,0.1) ${progress}% 100%
+  )`;
+
+  donutChart.style.background = warnaGradient;
+}
+}
+function animateProgressFill(total) {
+  const progressFill = document.getElementById("progressFill");
+  const progressPoints = document.querySelectorAll(".progress-point");
+
+  const targets = Array.from(progressPoints).map(point =>
+    parseInt(point.dataset.amount || "0")
+  );
+  const maxTarget = Math.max(...targets);
+
+  const progressContainer = document.querySelector(".vertical-progress");
+  const totalHeight = progressContainer.clientHeight;
+
+  const percent = Math.min(total / maxTarget, 1);
+  const targetHeight = percent * totalHeight;
+
+  let currentHeight = 0;
+  const step = targetHeight / 60; // durasi kira-kira 1 detik (60 frame)
+
+  const interval = setInterval(() => {
+    currentHeight += step;
+    if (currentHeight >= targetHeight) {
+      currentHeight = targetHeight;
+      clearInterval(interval);
+    }
+
+    progressFill.style.height = `${currentHeight}px`;
+
+    // Aktifkan titik yang sudah terlewati
+    progressPoints.forEach(point => {
+      const amount = parseInt(point.dataset.amount || "0");
+      const pointHeight = (amount / maxTarget) * totalHeight;
+      if (currentHeight >= pointHeight) {
+        point.classList.add("active");
+      } else {
+        point.classList.remove("active");
+      }
+    });
+  }, 16); // ~60fps
+}
+
+  const defaultDonors = [
+    { nama: "Adzam", jumlah: 100000 },
+    { nama: "Deva", jumlah: 50000 },
+    { nama: "Nazla N.K.", jumlah: 50000 },
+    { nama: "Mumtaza", jumlah: 50000 },
+    { nama: "Hisyam", jumlah: 50000 },
+    { nama: "Zafran", jumlah: 200000 },
+    { nama: "Ghiza", jumlah: 50000 },
+    { nama: "Radin", jumlah: 50000 },
+    { nama: "Abizard K.", jumlah: 50000 },
+    { nama: "Biyan", jumlah: 100000 },
+    { nama: "Agam", jumlah: 100000 },
+    { nama: "Arsa", jumlah: 75000 },
+    { nama: "Arfan", jumlah: 75000 },
+    { nama: "Afzar", jumlah: 50000 },
+    { nama: "Ghania", jumlah: 50000 },
+    { nama: "Aryadana", jumlah: 50000 },
+    { nama: "Nazwa", jumlah: 50000 },
+    { nama: "Ikmal", jumlah: 50000 },
+    { nama: "Fayad", jumlah: 50000 },
+    { nama: "Shaeraa", jumlah: 50000 },
+    { nama: "Azam", jumlah: 50000 },
+    { nama: "Gazala", jumlah: 50000 },
+    { nama: "Asyifa", jumlah: 100000 },
+    { nama: "Alisha", jumlah: 100000 },
+    { nama: "Khumayra A.", jumlah: 50000 },
+    { nama: "Jasmine", jumlah: 50000 },
+    { nama: "Alya", jumlah: 50000 },
+    { nama: "Adlan", jumlah: 50000 },
+    { nama: "Diaz", jumlah: 50000 },
+    { nama: "Ibra", jumlah: 1000000 },
+    { nama: "Agra", jumlah: 100000 },
+    { nama: "Kaleya", jumlah: 50000 },
+    { nama: "Qiana", jumlah: 50000 },
+    { nama: "Yusuf", jumlah: 50000 },
+    { nama: "Ibrahim", jumlah: 50000 },
+    { nama: "Nadhir", jumlah: 100000 },
+    { nama: "Nashor", jumlah: 50000 },
+    { nama: "Aisyah", jumlah: 50000 },
+    { nama: "Ms Entin", jumlah: 200000 },
+    { nama: "Aina", jumlah: 50000 }
+  ];
+
+  let baseTotal = defaultDonors.reduce((sum, donor) => sum + donor.jumlah, 0);
+  let currentAnimation = null;
+
+  function formatRupiah(input) {
+    let angka = input.value.replace(/[^\d]/g, "");
+    let formatted = angka.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    input.value = formatted;
+  }
+
+  function handleInputChange() {
+    const input = document.getElementById("jumlahDonasi");
+    formatRupiah(input);
+
+    let tambahan = parseInt(input.value.replace(/\./g, "")) || 0;
+    let totalSementara = baseTotal + tambahan;
+
+    animateCountUp("totalAmount", totalSementara);
+  }
+
+  function animateCountUp(id, target, duration = 1000) {
+    const element = document.getElementById(id);
+
+    if (currentAnimation) clearInterval(currentAnimation);
+
+    let start = parseInt(element.innerText.replace(/\./g, "")) || 0;
+    const range = target - start;
+    const increment = range / (duration / 20);
+
+    currentAnimation = setInterval(() => {
+      start += increment;
+      if ((increment > 0 && start >= target) || (increment < 0 && start <= target)) {
+        start = target;
+        clearInterval(currentAnimation);
+      }
+      element.innerText = Math.floor(start).toLocaleString('id-ID');
+    }, 20);
+  }
+document.addEventListener("DOMContentLoaded", () => {
+  animateCountUp("totalAmount", baseTotal);
+  animateProgressFill(baseTotal);
+  updateCardDana(baseTotal); // update untuk card horizontal
+});
+
+  let activeDonors = [...defaultDonors];
+  let shuffledQueue = shuffle([...activeDonors]);
+
+  document.addEventListener("DOMContentLoaded", () => {
+    renderDonors(0, activeDonors.length);
+    showNextNotification();
+    setInterval(showNextNotification, 4000);
+  });
+
+  function renderDonors(start, end) {
+    const list = document.getElementById("donatur-names");
+    for (let i = start; i < end && i < activeDonors.length; i++) {
+      const li = document.createElement("li");
+      li.textContent = activeDonors[i].nama;
+      list.appendChild(li);
+    }
+  }
+
+  function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
+
+  function showNextNotification() {
+    const notif = document.getElementById("notification");
+
+    if (shuffledQueue.length === 0) {
+      shuffledQueue = shuffle([...activeDonors]);
+    }
+
+    const nextDonor = shuffledQueue.shift();
+    notif.innerHTML = `✨ <strong>${nextDonor.nama}</strong> telah bersadaqah sebesar <strong>Rp${nextDonor.jumlah.toLocaleString('id-ID')}</strong> <span style="font-size: 0.8rem;">💸</span>`;
+  }
+
+function tambahDonatur() {
+  const namaInput = document.getElementById("namaDonatur");
+  const jumlahInput = document.getElementById("jumlahDonasi");
+  const nama = namaInput.value.trim();
+const jumlah = parseInt(jumlahInput.value.trim().replace(/\./g, ""));
+
+  if (nama && !isNaN(jumlah)) {
+    const newDonor = { nama, jumlah };
+
+    activeDonors.push(newDonor);
+    shuffledQueue.unshift(newDonor); // Donor baru langsung muncul di notifikasi berikutnya
+
+    const list = document.getElementById("donatur-names");
+    const li = document.createElement("li");
+    li.textContent = nama; // Hanya nama di list
+    list.insertBefore(li, list.firstChild);
+
+    // Reset form
+    namaInput.value = "";
+    jumlahInput.value = "";
+
+// Tambahkan jumlah donasi baru ke baseTotal
+baseTotal += jumlah;
+
+// Update total tampilannya dan progress fill
+animateCountUp("totalAmount", baseTotal);
+animateProgressFill(baseTotal);
+  updateCardDana(baseTotal);
+
+    // Tutup modal
+    const modal = bootstrap.Modal.getInstance(document.getElementById('sadaqahModal'));
+    modal.hide();
+
+    // Tampilkan pesan terima kasih
+    document.getElementById("thankYouMessage").innerHTML = `Terima kasih <strong>${nama}</strong> telah bersadaqah!`;
+    showConfetti();
+
+    const thankYouModal = new bootstrap.Modal(document.getElementById('thankYouModal'));
+    thankYouModal.show();
+  }
+}
+
+  function showConfetti() {
+    const count = 200;
+    const defaults = { origin: { y: 0.7 } };
+
+    function fire(particleRatio, opts) {
+      confetti(Object.assign({}, defaults, opts, {
+        particleCount: Math.floor(count * particleRatio),
+        ticks: 200,
+        zIndex: 9999
+      }));
+    }
+
+    fire(0.25, { spread: 26, startVelocity: 55 });
+    fire(0.2, { spread: 60 });
+    fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+    fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
+    fire(0.1, { spread: 120, startVelocity: 45 });
+
+    document.querySelectorAll("canvas").forEach(canvas => {
+      canvas.classList.add("confetti-canvas");
+    });
+  }
+</script>
+<script>
+  const hari = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+  const bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+  const today = new Date();
+  const namaHari = hari[today.getDay()];
+  const tanggal = today.getDate();
+  const namaBulan = bulan[today.getMonth()];
+  const tahun = today.getFullYear();
+
+  const fullDate = `Update : ${namaHari}, ${tanggal} ${namaBulan} ${tahun}`;
+  document.getElementById("dateElement").textContent = fullDate;
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
