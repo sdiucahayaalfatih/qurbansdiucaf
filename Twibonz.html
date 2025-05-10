@@ -1,0 +1,1775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SDIU TWIBONZ</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Font Awesome 6 (CDN) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+  body.noscroll {
+  overflow: hidden;
+}
+    .upload-box {
+      border: 2px dashed #ccc;
+      padding: 50px;
+      text-align: center;
+      background-color: #f9f9f9;
+      border-radius: 10px;
+      cursor: pointer;
+      height: 400px;
+      position: relative;
+      overflow: hidden;
+      touch-action: none;
+    }
+    .upload-instructions {
+  background-image: linear-gradient(45deg, #ccc 25%, transparent 25%),
+                    linear-gradient(-45deg, #ccc 25%, transparent 25%),
+                    linear-gradient(45deg, transparent 75%, #ccc 75%),
+                    linear-gradient(-45deg, transparent 75%, #ccc 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+  background-color: white;
+}
+    .bottom-bar {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #fff;
+      padding: 10px;
+      box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1);
+    }
+    .icon-list img {
+      width: 32px;
+      margin: 0 5px;
+    }
+    .square-frame {
+      width: 100%;
+      max-width: 400px;
+      aspect-ratio: 1 / 1;
+      object-fit: contain;
+      border: 1px solid #ccc;
+      background-color: #fff;
+    }
+    .twibbon-template {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      pointer-events: none;
+      border-radius: 10px;
+    }
+    #imageContainer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      overflow: hidden;
+    }
+    #uploadedImage {
+      position: absolute;
+      cursor: grab;
+      user-select: none;
+      transform-origin: 0 0;
+    }
+    .upload-instructions {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: -1;
+      color: #666;
+      pointer-events: none;
+    }
+    #deleteBtn {
+      display: none;
+    }
+  </style>
+  
+ <style>
+
+#twibbonList {
+   max-height: calc(100vh - 60px); /* 60px kira-kira tinggi header menu */
+  height: 70vh; /* Batas tinggi hanya 70% dari tinggi layar */
+  overflow-y: auto;
+  padding-top: 5px;
+}
+    #hamburgerMenu {
+      position: fixed;
+      top: 0;
+      left: -300px;
+      width: 300px;
+      height: 100%;
+      background: #fff;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+      overflow-y: auto;
+      transition: left 0.3s ease-in-out;
+      z-index: 1050;
+    }
+#hamburgerMenu .menu-header {
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  z-index: 10;
+}
+
+    #hamburgerMenu.show {
+      left: 0;
+    }
+
+    .twibbon-item {
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #eee;
+      padding: 10px;
+       transition: background-color 0.3s;
+    }
+
+.twibbon-item:hover {
+  background-color: #f8f9fa; /* Warna latar saat hover */
+  cursor: pointer;
+}
+    .twibbon-item img {
+      width: 40px;
+      height: 40px;
+      object-fit: cover;
+      border-radius: 5px;
+      margin-right: 10px;
+    }
+
+    .twibbon-item .number {
+      width: 25px;
+      font-weight: bold;
+      margin-right: 10px;
+    }
+
+    .twibbon-item .name {
+      flex-grow: 1;
+    }
+
+   
+    .menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Hitam transparan */
+  z-index: 1040; /* Lebih rendah dari menu (1050) tapi di atas konten */
+  display: none;
+}
+.menu-overlay.show {
+  display: block;
+}
+
+.twibbon-item .name {
+  flex-grow: 1;
+  margin-left: 10px;
+  font-weight: 500;
+}
+.twibbon-item .delete {
+  cursor: pointer;
+  font-size: 18px;
+  color: #dc3545;
+  padding: 4px 8px;
+  margin-left: 10px;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  
+}
+
+.twibbon-item .delete i {
+  pointer-events: none; /* agar klik tetap mengenai parent div */
+}
+
+.twibbon-item .delete:hover {
+  color: #a71d2a;
+}
+.hamburger {
+  width: 25px;
+  height: 20px;
+  position: relative;
+  margin-right: 8px;
+  display: inline-block;
+  transition: transform 0.3s ease;
+  margin-top: 7px;
+}
+
+.hamburger span {
+  background: #0d6efd;
+  display: block;
+  height: 3px;
+  width: 100%;
+  position: absolute;
+  transition: 0.3s ease;
+  border-radius: 3px;
+  left: 5px;
+  
+}
+
+.hamburger span:nth-child(1) {
+  top: 0;
+}
+.hamburger span:nth-child(2) {
+  top: 50%;
+  transform: translateY(-50%);
+}
+.hamburger span:nth-child(3) {
+  bottom: 0;
+}
+
+.toggle-menu.active .hamburger span:nth-child(1) {
+  transform: rotate(45deg);
+  top: 50%;
+}
+
+.toggle-menu.active .hamburger span:nth-child(2) {
+  opacity: 0;
+}
+
+.toggle-menu.active .hamburger span:nth-child(3) {
+  transform: rotate(-45deg);
+  bottom: 50%;
+}
+  </style>
+  <style>
+    body.dark-mode {
+  background-color: #1f1f1f;
+  color: #f1f1f1;
+}
+
+body.dark-mode #hamburgerMenu {
+  background-color: #1f1f1f;
+}
+
+body.dark-mode .twibbon-item:hover {
+  background-color: #2a2a2a;
+}
+
+body.dark-mode .menu-header {
+  background-color: #1f1f1f;
+}
+
+body.dark-mode .twibbon-item .delete:hover {
+  color: #ff6b6b;
+}
+/* Default (mode terang) */
+.logo-main {
+  color: #0d6efd; /* atau tetap biarkan jika ingin ikut text-primary */
+}
+
+.logo-sub {
+  color: #dc3545;
+}
+
+/* Saat mode malam */
+body.dark-mode .logo-main {
+  color: #ffffff !important;
+}
+
+body.dark-mode .logo-sub {
+  color: #999999 !important;
+}
+
+body.dark-mode .hamburger span {
+  background: white;
+}
+/* Tambahan gaya khusus jika ingin beda */
+.dark-btn {
+  background-color: #2c2c2c !important;
+  color: white !important;
+  border-color: white !important;
+}
+
+.dark-btn:hover {
+  background-color: #aaaa !important;
+  color: white !important;
+}
+/* Tambahan warna latar dan teks untuk dark mode */
+.dark-mode .menu-header {
+  background-color: #1e1e1e !important;
+  color: #fff;
+  border-bottom: 1px solid #444;
+}
+
+/* Agar h5-nya ikut putih */
+.dark-mode .menu-header h5 {
+  color: #fff;
+}
+
+/* Tombol close di dark mode */
+.dark-mode .menu-header .btn-close {
+  filter: invert(1); /* Membalik warna agar terlihat putih */
+}
+
+
+/* Tombol upload & delete */
+.dark-mode .btn-outline-primary {
+  color: #fff;
+  border-color: #444;
+  background-color: transparent;
+}
+.dark-mode .btn-outline-primary:hover {
+  background-color: #4f4f4f;
+  border-color: #666;
+}
+
+.dark-mode .btn-outline-danger {
+  color: #fff;
+  border-color: #444;
+  background-color: transparent;
+}
+.dark-mode .btn-outline-danger:hover {
+  background-color: #222;
+  border-color: #666;
+}
+
+.dark-mode .btn-outline-success {
+  color: #fff;
+  border-color: #444;
+  background-color: transparent;
+}
+.dark-mode .btn-outline-success:hover {
+  background-color: #4f4f4f;
+  border-color: #666;
+}
+
+/* Tombol utama (download) */
+.dark-mode .btn-primary {
+  background-color: #222;
+  border-color: #333;
+  color: #fff;
+}
+.dark-mode .btn-primary:hover {
+  background-color: #4f4f4f;
+  border-color: #555;
+}
+
+/* Upload box */
+.dark-mode .upload-box {
+  background-color: #222;
+  border: 2px dashed #444;
+}
+
+/* Instruksi upload */
+.dark-mode .upload-instructions {
+  background-color: #4f4f4f;
+  
+}
+/* Instruksi upload */
+.dark-mode .upload-instructions p{
+  color: white;
+}
+/* Instruksi upload */
+.dark-mode .bi-cloud-arrow-up-fill {
+  color: white !important; /* atau #ccc untuk sedikit lebih terang */
+}
+.dark-mode .upload-instructions small.text-muted {
+  color: white !important;
+}
+
+/* Garis horizontal */
+.dark-mode hr {
+  border-color: #333;
+}
+
+/* Frame square (jika ada) */
+.dark-mode .square-frame {
+  background-color: #111;
+  border-color: white;
+}
+
+
+/* Dark Mode untuk Setting Gambar */
+.dark-mode .list-group-item {
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #444;
+}
+
+.dark-mode .list-group-item.active {
+  background-color: #555;
+  color: #fff;
+  border-color: #666;
+}
+
+.dark-mode .list-group-item:hover {
+  background-color: #444;
+  color: #fff;
+}
+
+/* Dark Mode untuk Card dan Input */
+.dark-mode .card {
+  background-color: #333;
+  border-color: #444;
+}
+
+.dark-mode .card-body {
+  color: #fff;
+}
+
+.dark-mode .form-label {
+  color: #fff;
+}
+
+.dark-mode .form-range {
+  
+  color: #fff;
+}
+
+/* Dark Mode untuk Range Value */
+.dark-mode .form-range:focus {
+  outline: none;
+}
+
+
+.dark-mode .form-range::-webkit-slider-runnable-track {
+  background-color: #444;
+}
+
+.dark-mode .form-range::-webkit-slider-thumb {
+  background-color: #fff;
+  border: none;
+}
+
+/* Dark Mode untuk Text Value */
+.dark-mode .d-flex span {
+  color: #ccc;
+}
+/* Outline gradasi */
+.gradient-outline {
+  position: relative;
+  background: transparent;
+  border: none;
+  z-index: 1;
+}
+
+.gradient-outline::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(135deg, #4444, #4545);
+  z-index: -1;
+  border-radius: 0.375rem; /* Sesuaikan dengan btn Bootstrap */
+  mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude; 
+  -webkit-mask-composite: destination-out;
+  padding: 2px;
+}
+
+/* Icon warna sesuai tema */
+#toggleThemeBtn i {
+  color: inherit;
+  transition: color 0.3s;
+}
+
+/* Hover efek */
+.gradient-outline:hover::before {
+  filter: brightness(1.1);
+}
+  </style>
+</head>
+<body>
+
+<div class="position-relative py-3 border-bottom">
+  <!-- Toggle Menu (Kiri) -->
+  <button class="btn toggle-menu position-absolute start-0 top-50 translate-middle-y ms-3" id="toggleMenuBtn">
+    <div class="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </button>
+
+  <!-- Logo (Tengah) -->
+ <h4 class="fw-bold text-primary text-center m-0" id="appLogo">
+  <i class="bi bi-stars me-1 fs-4 text-warning"></i>
+  <span class="logo-main">Twibonz</span><span class="logo-sub">SDIU</span>
+</h4>
+
+  <!-- Toggle Theme (Kanan) -->
+<button class="btn btn-outline-secondary gradient-outline position-absolute end-0 top-50 translate-middle-y me-3" id="toggleThemeBtn">
+  <i id="themeIcon" class="bi bi-moon"></i>
+</button>
+</div>
+<!-- Hamburger Slide Menu -->
+<div id="hamburgerMenu">
+  <!-- Header Menu -->
+<!-- Header Menu dengan Penyimpanan di dalamnya -->
+<div class="p-3 border-bottom menu-header">
+  <div class="d-flex justify-content-between align-items-center mb-2">
+    <h5 class="mb-0">Twibonz List :</h5>
+    <button class="btn-close" id="closeMenuBtn"></button>
+  </div>
+
+  <!-- Penyimpanan Tersedia -->
+  <div class="storage-section mb-2">
+    <div class="d-flex align-items-center mb-1">
+      <i class="fa-solid fa-hdd me-2" style="font-size: 14px;"></i>
+      <span id="storageRemainingText" class="small fw-semibold">Penyimpanan Tersisa</span>
+    </div>
+    <!-- Penyimpanan Tersisa -->
+<div class="progress" style="height: 8px; border-radius: 10px;">
+  <div id="storageRemainingBar" class="progress-bar"
+    style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+</div>
+
+    <div id="storageRemainingAmount" class="text-end small mt-1 text-muted">0 KB</div>
+  </div>
+
+  <!-- Penyimpanan Terpakai -->
+  <div class="storage-section">
+    <div class="d-flex align-items-center mb-1">
+      <i class="fa-solid fa-hdd me-2" style="font-size: 14px;"></i>
+      <span id="storageUsedText" class="small fw-semibold">Penyimpanan Terpakai</span>
+    </div>
+    
+<!-- Penyimpanan Terpakai -->
+<div class="progress" style="height: 8px; border-radius: 10px;">
+  <div id="storageUsedBar" class="progress-bar"
+    style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+</div>
+    <div id="storageUsedAmount" class="text-end small mt-1 text-muted">0 KB</div>
+  </div>
+</div>
+
+  <div id="twibbonList" class="p-2">
+    <!-- Twibonz yang terimpan akan muncul -->
+  </div>
+</div>
+<style>
+body.dark-mode #storageRemainingAmount,
+body.dark-mode #storageUsedAmount {
+  color: #ccc !important;
+}
+
+body.dark-mode .progress {
+  background: #333;
+}
+
+body.dark-mode .menu-header {
+  border-bottom: 1px solid #444;
+}
+
+body.dark-mode .hamburger span {
+  background-color: #ccc;
+}
+/* Gradient untuk Penyimpanan Tersisa */
+#storageRemainingBar {
+  background-image: linear-gradient(to right, #00c853, #00bcd4);
+}
+
+/* Gradient untuk Penyimpanan Terpakai */
+#storageUsedBar {
+  background-image: linear-gradient(to right, #ff6d00, #d50000);
+}
+/* Styling untuk Progress Bar */
+.progress {
+  background: #f3f3f3;
+}
+
+.progress-bar {
+  height: 100%;
+  transition: width 0.5s ease-in-out; /* Animasi perubahan lebar bar */
+}
+
+#storageUsedText, #storageRemainingText {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+#storageRemainingAmount, #storageUsedAmount {
+  font-size: 12px;
+ 
+}
+
+
+.storage-section {
+  margin-bottom: 20px;
+}
+
+</style>
+
+<script>
+// Fungsi untuk menghitung penggunaan storage
+function updateStorageInfo() {
+  // Mendapatkan total penggunaan storage di localStorage
+  let usedSpace = 0;
+  for (let key in localStorage) {
+    if (localStorage.hasOwnProperty(key)) {
+      usedSpace += (localStorage[key].length * 2); // Menghitung ukuran dalam byte
+    }
+  }
+
+  // Menghitung kapasitas storage yang tersisa (estimasi 5MB)
+  const maxStorage = 5 * 1024 * 1024; // 5MB dalam bytes
+  const remainingSpace = maxStorage - usedSpace;
+
+  // Menampilkan informasi penggunaan dan sisa storage
+  const usedKB = (usedSpace / 1024).toFixed(2); // Convert byte to KB
+  const remainingKB = (remainingSpace / 1024).toFixed(2); // Convert byte to KB
+
+  // Update text informasi
+  document.getElementById('storageUsedAmount').textContent = `${usedKB} KB`;
+  document.getElementById('storageRemainingAmount').textContent = `${remainingKB} KB`;
+
+  // Update progress bar untuk Penyimpanan Terpakai
+  const usedPercentage = (usedSpace / maxStorage) * 100; // Persentase penggunaan storage
+  const usedProgressBar = document.getElementById('storageUsedBar');
+  usedProgressBar.style.width = `${usedPercentage}%`;
+  usedProgressBar.setAttribute('aria-valuenow', usedPercentage.toFixed(2));
+
+  // Update progress bar untuk Penyimpanan Tersedia
+  const remainingPercentage = 100 - usedPercentage; // Persentase penyimpanan yang tersisa
+  const remainingProgressBar = document.getElementById('storageRemainingBar');
+  remainingProgressBar.style.width = `${remainingPercentage}%`;
+  remainingProgressBar.setAttribute('aria-valuenow', remainingPercentage.toFixed(2));
+
+  // Mengubah warna progress bar berdasarkan status
+  if (usedPercentage > 80) {
+    usedProgressBar.classList.remove('bg-success', 'bg-warning');
+    usedProgressBar.classList.add('bg-danger');
+  } else if (usedPercentage > 50) {
+    usedProgressBar.classList.remove('bg-success', 'bg-danger');
+    usedProgressBar.classList.add('bg-warning');
+  } else {
+    usedProgressBar.classList.remove('bg-warning', 'bg-danger');
+    usedProgressBar.classList.add('bg-success');
+  }
+}
+</script>
+<div id="menuOverlay" class="menu-overlay"></div>
+<script>
+ const toggleBtnTheme = document.getElementById('toggleThemeBtn');
+const themeIcon = document.getElementById('themeIcon');
+
+function applyTheme(mode) {
+  if (mode === 'dark') {
+    document.body.classList.add('dark-mode');
+    themeIcon.classList.replace('bi-moon', 'bi-sun');
+    toggleBtnTheme.classList.remove('btn-outline-secondary');
+    toggleBtnTheme.classList.add('btn-light', 'dark-btn');
+  } else {
+    document.body.classList.remove('dark-mode');
+    themeIcon.classList.replace('bi-sun', 'bi-moon');
+    toggleBtnTheme.classList.remove('btn-light', 'dark-btn');
+    toggleBtnTheme.classList.add('btn-outline-secondary');
+  }
+}
+
+// Toggle manual
+toggleBtnTheme.addEventListener('click', () => {
+  const isDark = document.body.classList.contains('dark-mode');
+  const mode = isDark ? 'light' : 'dark';
+  localStorage.setItem('theme', mode);
+  applyTheme(mode);
+});
+
+// Auto at start
+const storedTheme = localStorage.getItem('theme');
+const autoTheme = storedTheme || (new Date().getHours() >= 18 || new Date().getHours() < 6 ? 'dark' : 'light');
+applyTheme(autoTheme);
+</script>
+<script>
+const menu = document.getElementById('hamburgerMenu');
+const toggleBtn = document.getElementById('toggleMenuBtn');
+const overlay = document.getElementById('menuOverlay');
+const closeBtn = document.getElementById('closeMenuBtn');
+
+toggleBtn.onclick = (e) => {
+  e.stopPropagation();
+  menu.classList.add('show');
+  overlay.classList.add('show');
+  document.body.classList.add('noscroll');
+  toggleBtn.classList.add('active'); // tambahkan animasi hamburger
+};
+
+closeBtn.onclick = () => {
+  menu.classList.remove('show');
+  overlay.classList.remove('show');
+  document.body.classList.remove('noscroll');
+  toggleBtn.classList.remove('active'); // hilangkan animasi hamburger
+};
+
+document.addEventListener('click', function (e) {
+  if (!menu.contains(e.target) && !toggleBtn.contains(e.target)) {
+    menu.classList.remove('show');
+    overlay.classList.remove('show');
+    document.body.classList.remove('noscroll');
+    toggleBtn.classList.remove('active'); // hilangkan animasi hamburger
+  }
+});
+
+  function deleteItem(el) {
+    const item = el.closest('.twibbon-item');
+    item.remove();
+    updateNumbers();
+  }
+
+  function updateNumbers() {
+    document.querySelectorAll('.twibbon-item .number').forEach((el, i) => {
+      el.textContent = i + 1;
+    });
+  }
+
+  // Tutup saat klik di luar menu
+  document.addEventListener('click', function (e) {
+    if (!menu.contains(e.target) && !toggleBtn.contains(e.target)) {
+      menu.classList.remove('show');
+    }
+  });
+</script>
+
+ <div class="container mt-4 mb-5">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    
+    <div>
+      <button id="uploadBtn" class="btn btn-outline-primary">
+        <i class="bi bi-upload me-1"></i> Upload Foto
+      </button>
+      <button id="deleteBtn" class="btn btn-outline-danger">
+        <i class="bi bi-trash me-1"></i> Hapus Foto
+      </button>
+    </div>
+    <input type="file" id="uploadInput" accept="image/*" style="display: none;">
+  </div>
+ <canvas id="twibbonCanvas" style="display: none;"></canvas>
+
+
+    <div class="upload-box mb-4 position-relative mx-auto" style="width: 100%; max-width: 400px; aspect-ratio: 1 / 1; overflow: hidden;" id="twibbonContainer">
+      <div id="imageContainer">
+        <img id="uploadedImage" style="display: none;">
+        <div class="upload-instructions d-flex flex-column align-items-center justify-content-center text-center h-100 w-100 p-3" style="color: #777;">
+  
+</div>
+      </div>
+      <img src="twibonzsdiu.png" class="twibbon-template" id="twibbonTemplate">
+    </div>
+
+    <hr>
+    <div class="d-flex justify-content-between align-items-center">
+   
+   <button id="changeTemplateBtn" class="btn btn-outline-success">
+  <i class="bi bi-image me-1"></i> Upload Template
+</button>
+<input type="file" id="templateInput" accept="image/png, image/jpeg" style="display: none;">
+    <button id="downloadBtn" class="btn btn-primary" onclick="downloadTwibbon()">
+  <i class="bi bi-download me-1"></i> Unduh
+</button>
+    </div>
+  </div>
+<div class="container mt-4">
+  <div class="row">
+    <!-- Menu Sidebar -->
+    <div class="col-md-3">
+      <div class="list-group">
+        <button class="list-group-item list-group-item-action active" id="menu1Btn">
+          Adjust 1: Basic
+        </button>
+        <button class="list-group-item list-group-item-action" id="menu2Btn">
+          Adjust 2: Effects
+        </button>
+        <button class="list-group-item list-group-item-action" id="menu3Btn">
+          Adjust 3: Advanced
+        </button>
+      </div>
+    </div>
+
+    <!-- Menu Content -->
+    <div class="col-md-9">
+      <div id="menu1" class="adjust-menu">
+        <div class="card mb-3">
+          <div class="card-body">
+            <div class="mb-3">
+              <label for="brightness" class="form-label">Brightness</label>
+              <div class="d-flex justify-content-between">
+                <input type="range" class="form-range" id="brightness" min="0" max="100" value="50" disabled>
+                <span id="brightnessVal" style="width: 70px; text-align: right;">50%</span>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="contrast" class="form-label">Contrast</label>
+              <div class="d-flex justify-content-between">
+                <input type="range" class="form-range" id="contrast" min="0" max="100" value="50" disabled>
+                <span id="contrastVal" style="width: 70px; text-align: right;">50%</span>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="saturation" class="form-label">Saturation</label>
+              <div class="d-flex justify-content-between">
+                <input type="range" class="form-range" id="saturation" min="0" max="100" value="50" disabled>
+                <span id="saturationVal" style="width: 70px; text-align: right;">50%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="menu2" class="adjust-menu" style="display: none;">
+        <div class="card mb-3">
+          <div class="card-body">
+            <div class="mb-3">
+              <label for="grayscale" class="form-label">Grayscale</label>
+              <div class="d-flex justify-content-between">
+                <input type="range" class="form-range" id="grayscale" min="0" max="100" value="0" disabled>
+                <span id="grayscaleVal" style="width: 70px; text-align: right;">0%</span>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="sepia" class="form-label">Sepia</label>
+              <div class="d-flex justify-content-between">
+                <input type="range" class="form-range" id="sepia" min="0" max="100" value="0" disabled>
+                <span id="sepiaVal" style="width: 70px; text-align: right;">0%</span>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="smooth" class="form-label">Smooth</label>
+              <div class="d-flex justify-content-between">
+                <input type="range" class="form-range" id="smooth" min="0" max="100" value="0" disabled>
+                <span id="smoothVal" style="width: 70px; text-align: right;">0%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="menu3" class="adjust-menu" style="display: none;">
+        <div class="card mb-3">
+          <div class="card-body">
+            <div class="mb-3">
+              <label for="sharpen" class="form-label">Sharpen</label>
+              <div class="d-flex justify-content-between">
+                <input type="range" class="form-range" id="sharpen" min="0" max="100" value="50" disabled>
+                <span id="sharpenVal" style="width: 70px; text-align: right;">50%</span>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="temperature" class="form-label">Temperature/Tint</label>
+              <div class="d-flex justify-content-between">
+                <input type="range" class="form-range" id="temperature" min="0" max="100" value="50" disabled>
+                <span id="temperatureVal" style="width: 70px; text-align: right;">50%</span>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="boost" class="form-label">Boost</label>
+              <div class="d-flex justify-content-between">
+                <input type="range" class="form-range" id="boost" min="0" max="100" value="50" disabled>
+                <span id="boostVal" style="width: 70px; text-align: right;">50%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+  /* Gradasi untuk teks */
+.gradient-text {
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text; /* Agar berfungsi di browser berbasis Webkit */
+  text-decoration: none;
+  font-weight: bold;
+  transition: all 0.4s ease-in-out;
+}
+
+/* Gradasi untuk ikon */
+.gradient-icon {
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  font-size: 1.1rem; /* Ukuran ikon */
+  display: inline-block;
+  transition: all 0.4s ease-in-out;
+}
+
+/* Instagram Gradient */
+.instagram-gradient {
+  background-image: linear-gradient(to right, #F58529, #DD2A7B, #8a3ab9, #3f729b, #F56040);
+}
+
+.instagram-icon {
+  background-image: linear-gradient(to right, #F58529, #DD2A7B, #8a3ab9, #3f729b, #F56040);
+}
+
+/* WhatsApp Gradient */
+.whatsapp-gradient {
+  background-image: linear-gradient(to right, #25D366, #128C7E);
+}
+
+.whatsapp-icon {
+  background-image: linear-gradient(to right, #25D366, #128C7E);
+}
+
+/* TikTok Gradient */
+.tiktok-gradient {
+  background-image: linear-gradient(to right, #010002, #69C9D0, #FE2C55);
+}
+
+.tiktok-icon {
+  background-image: linear-gradient(to right, #010002, #69C9D0, #FE2C55);
+}
+
+/* Efek Hover */
+.gradient-text:hover,
+.gradient-icon:hover {
+  background-image: none !important;
+  color: white !important;
+}
+
+.gradient-icon:hover {
+  background-image: none;
+  -webkit-text-fill-color: white;
+}
+
+.btn {
+  border: 1px solid transparent; /* Menghapus border standar */
+  padding-left: 12px;
+  padding-right: 12px;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn:hover {
+  border-color: transparent; /* Menghindari perubahan border saat hover */
+}
+</style>
+<!-- Modal Twibbon Download & Share -->
+<div class="modal fade" id="twibbonModal" tabindex="-1" aria-labelledby="twibbonModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content border-0 shadow-lg rounded-4">
+      <div class="modal-header border-0">
+        <h5 class="modal-title fw-bold" id="twibbonModalLabel">Twibbon Siap Digunakan!</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+      </div>
+      <div class="modal-body text-center">
+        <!-- Gambar hasil twibbon -->
+        <img id="resultImage" src="" alt="Twibbon" class="img-fluid rounded-3 shadow-sm mb-4" style="max-height: 400px;">
+
+        <div class="mb-3">
+        <a id="downloadTwibbonBtn" href="#" download class="btn btn-success px-4 rounded-pill me-2">
+  <i class="bi bi-download me-1"></i> <span>Download</span>
+</a>
+        </div>
+
+        <p class="fw-semibold mb-3">Bagikan ke teman-temanmu:</p>
+      <div class="d-flex justify-content-center gap-2 flex-wrap">
+  <!-- Instagram -->
+  <a href="#" class="btn rounded-pill px-2 py-1 d-flex align-items-center small gradient-text instagram-gradient">
+    <i class="bi bi-instagram me-1 gradient-icon instagram-icon"></i> Instagram
+  </a>
+  <!-- WhatsApp -->
+  <a href="https://wa.me/?text=Lihat%20Twibbon%20aku%20di%20sini%20[LINK]" target="_blank" class="btn rounded-pill px-2 py-1 d-flex align-items-center small gradient-text whatsapp-gradient">
+    <i class="bi bi-whatsapp me-1 gradient-icon whatsapp-icon"></i> WhatsApp
+  </a>
+  <!-- TikTok -->
+  <a href="#" class="btn rounded-pill px-2 py-1 d-flex align-items-center small gradient-text tiktok-gradient">
+    <i class="bi bi-tiktok me-1 gradient-icon tiktok-icon"></i> TikTok
+  </a>
+</div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="deleteTwibbonModal" tabindex="-1" aria-labelledby="deleteTwibbonModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-3 shadow">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteTwibbonModalLabel">Konfirmasi Hapus</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+      </div>
+      <div class="modal-body text-center">
+        <p>Apakah kamu yakin ingin menghapus Twibonz ini?</p>
+        
+        <!-- Loading -->
+        <div id="deleteStatus" class="mt-3" style="display: none;">
+          <div class="spinner-border text-primary" role="status"></div>
+          <p class="mt-2">Menghapus Twibonz...</p>
+        </div>
+        
+        <!-- Berhasil -->
+        <div id="deleteSuccess" class="text-success fw-bold" style="display: none;">
+          <div class="checkmark mb-2">
+            <svg viewBox="0 0 52 52">
+              <path class="checkmark__check" fill="none" stroke="#28a745" stroke-width="5" d="M14 27l7 7 16-16"/>
+            </svg>
+          </div>
+          Twibonz berhasil dihapus.
+        </div>
+        
+        <!-- Gagal -->
+        <div id="deleteError" class="text-danger fw-bold" style="display: none;">
+          <div class="checkmark mb-2">
+            <svg viewBox="0 0 52 52">
+              <line x1="16" y1="16" x2="36" y2="36" stroke="#dc3545" stroke-width="5" />
+              <line x1="36" y1="16" x2="16" y2="36" stroke="#dc3545" stroke-width="5" />
+            </svg>
+          </div>
+          Gagal menghapus. Periksa koneksi internet kamu.
+        </div>
+      </div>
+      <div class="modal-footer justify-content-center">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tidak</button>
+        <button id="confirmDeleteBtn" type="button" class="btn btn-danger">Ya</button>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+.checkmark svg {
+  width: 52px;
+  height: 52px;
+  animation: pop 0.3s ease-out;
+}
+
+.checkmark__check {
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: draw 0.5s forwards;
+}
+
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+/* Dark mode modal */
+body.dark-mode .modal-content {
+  background-color: #2c2c2c; /* Warna latar belakang modal untuk mode gelap */
+  color: white; /* Teks putih untuk mode gelap */
+  border: 1px solid #444; /* Warna border yang lebih gelap */
+}
+
+/* Header modal dalam dark mode */
+body.dark-mode .modal-header {
+  background-color: #333; /* Background gelap pada header */
+  border-bottom: 1px solid #444; /* Garis bawah yang lebih gelap */
+}
+
+body.dark-mode .modal-header .modal-title {
+  color: white; /* Teks judul modal berwarna putih */
+}
+
+/* Teks dalam body modal */
+body.dark-mode .modal-body {
+  background-color: #2c2c2c; /* Latar belakang gelap untuk body modal */
+}
+
+/* Teks status di dalam modal */
+body.dark-mode .modal-body .text-success {
+  color: #28a745; /* Teks sukses tetap hijau cerah */
+}
+
+body.dark-mode .modal-body .text-danger {
+  color: #dc3545; /* Teks error tetap merah cerah */
+}
+
+/* Modal footer dalam dark mode */
+body.dark-mode .modal-footer {
+  background-color: #333; /* Background footer modal */
+  border-top: 1px solid #444; /* Garis atas footer modal */
+}
+
+
+
+/* Spinner dalam dark mode */
+body.dark-mode .spinner-border {
+  border-top-color: #ffffff; /* Warna spinner menjadi putih */
+}
+
+</style>
+
+<!-- Footer -->
+<footer class="py-4 mt-5" style="background: linear-gradient(to right, #2196F3, #0D47A1); color: white;">
+  <div class="container text-center">
+    <p class="mb-2">Made With <span class="fw-bold">Win Art Studio</span></p>
+    <div class="social-links d-flex justify-content-center gap-3 flex-wrap">
+      <a href="https://wa.me/62895339293938" target="_blank" title="Chat via WhatsApp" class="text-decoration-none gradient-wa social-hover">
+        <i class="bi bi-whatsapp"></i> WhatsApp
+      </a>
+      <a href="https://www.facebook.com/ewint.hidayatullah" target="_blank" title="Follow on Facebook" class="text-decoration-none gradient-fb social-hover">
+        <i class="bi bi-facebook"></i> Facebook
+      </a>
+      <a href="https://www.instagram.com/windev01_?igsh=MWY4NXptZWx0bzdjYQ==" target="_blank" title="Follow on Instagram" class="text-decoration-none gradient-ig social-hover">
+        <i class="bi bi-instagram"></i> Instagram
+      </a>
+    </div>
+    <div class="mt-3">
+      <small>&copy; 2025 Win Art Studio. All Rights Reserved.</small>
+    </div>
+  </div>
+</footer>
+
+<style>
+/* Dark mode footer */
+body.dark-mode footer {
+  background: #121212 !important;
+  color: #f1f1f1;
+}
+/* Default (mode siang) — teks putih polos */
+.gradient-wa,
+.gradient-fb,
+.gradient-ig {
+  font-weight: bold;
+  font-size: 1rem;
+  display: inline-block;
+  color: white;
+  transition: all 0.4s ease-in-out;
+}
+
+/* Dark mode — aktifkan efek gradient dan transparansi */
+body.dark-mode .gradient-wa,
+body.dark-mode .gradient-fb,
+body.dark-mode .gradient-ig {
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  
+}
+
+body.dark-mode .gradient-wa {
+  
+  background-image: linear-gradient(to right, #25D366, #128C7E);
+}
+
+body.dark-mode .gradient-fb {
+  background-image: linear-gradient(to right, #1877F2, #003366);
+}
+
+body.dark-mode .gradient-ig {
+  background-image: radial-gradient(circle at 30% 107%, #fdf497 0%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+}
+/* Hover efek dengan transisi halus di mode malam */
+body.dark-mode .social-hover {
+  transition: color 0.4s ease-in-out, background-image 0.4s ease-in-out; /* Transisi halus saat hover */
+}
+/* Hover efek tetap untuk dark mode */
+body.dark-mode .social-hover:hover {
+  background-image: none !important;
+  color: white !important;
+  -webkit-text-fill-color: white !important;
+  
+}
+
+.gradient-wa:hover {
+  color: #25D366;
+}
+.gradient-fb:hover {
+  color: #1877F2;
+}
+.gradient-ig:hover {
+  color: #E1306C;
+}
+</style>
+
+<!-- Bootstrap Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+<script>
+  // Function to switch between menus
+  document.getElementById("menu1Btn").addEventListener("click", function() {
+    showMenu('menu1');
+  });
+
+  document.getElementById("menu2Btn").addEventListener("click", function() {
+    showMenu('menu2');
+  });
+
+  document.getElementById("menu3Btn").addEventListener("click", function() {
+    showMenu('menu3');
+  });
+
+  // Function to show only the selected menu
+  function showMenu(menuId) {
+    const menus = document.querySelectorAll('.adjust-menu');
+    menus.forEach(menu => {
+      menu.style.display = 'none';
+    });
+    
+    document.getElementById(menuId).style.display = 'block';
+
+    // Highlight active button
+    const buttons = document.querySelectorAll('.list-group-item');
+    buttons.forEach(button => {
+      button.classList.remove('active');
+    });
+    document.getElementById(menuId + 'Btn').classList.add('active');
+  }
+
+  // Initial Menu Display
+  showMenu('menu1');
+  
+  // Update the values dynamically for each range
+  const sliders = ['brightness', 'contrast', 'saturation', 'grayscale', 'sepia', 'smooth', 'sharpen', 'temperature', 'boost'];
+  sliders.forEach(id => {
+    const input = document.getElementById(id);
+    const label = document.getElementById(id + 'Val');
+    input.addEventListener('input', () => {
+  let percentage = (input.value / input.max) * 100;
+  label.textContent = Math.round(percentage) + '%';
+  applyFilters(); // Terapkan filter ke gambar
+});
+  });
+function applyFilters() {
+  const brightness = document.getElementById('brightness')?.value || 50;
+  const contrast = document.getElementById('contrast')?.value || 50;
+  const saturation = document.getElementById('saturation')?.value || 50;
+  const grayscale = document.getElementById('grayscale')?.value || 0;
+  const sepia = document.getElementById('sepia')?.value || 0;
+  const temperature = document.getElementById('temperature')?.value || 50;
+  const smooth = document.getElementById('smooth')?.value || 0;
+  const sharpen = document.getElementById('sharpen')?.value || 50;
+  const boost = document.getElementById('boost')?.value || 50;
+document.getElementById('sharpen').addEventListener('input', function () {
+  document.getElementById('sharpenVal').innerText = `${this.value}%`;
+  applyFilters();
+});
+
+document.getElementById('boost').addEventListener('input', function () {
+  document.getElementById('boostVal').innerText = `${this.value}%`;
+  applyFilters();
+});
+  const b = 1 + (brightness - 50) / 50;
+  const c = 1 + (contrast - 50) / 50;
+  const s = 1 + (saturation - 50) / 50;
+  const hue = (temperature - 50) * 1.8;
+  const blur = (smooth / 100) * 5;
+
+  // Simulasi boost sebagai gabungan saturasi + brightness
+  const boostFactor = (boost - 50) / 50;
+  const boostedSaturation = s + boostFactor * 0.5;
+  const boostedBrightness = b + boostFactor * 0.5;
+
+  uploadedImage.style.filter = `
+    brightness(${boostedBrightness})
+    contrast(${c})
+    saturate(${boostedSaturation})
+    grayscale(${grayscale}%)
+    sepia(${sepia}%)
+    hue-rotate(${hue}deg)
+    blur(${blur}px)
+  `;
+
+  // Untuk "sharpen", perlu canvas. Simulasi alternatif: tambahkan sedikit contrast jika sharpen > 50
+  if (sharpen > 50) {
+    uploadedImage.style.filter += ` contrast(${1 + (sharpen - 50) / 100})`;
+  }
+}
+
+</script>
+ 
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Ganti template twibbon
+document.getElementById('changeTemplateBtn').addEventListener('click', () => {
+  document.getElementById('templateInput').click();
+});
+
+document.getElementById('templateInput').addEventListener('change', function (event) {
+  const file = event.target.files[0];
+  if (file && file.type.match('image.*')) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      document.getElementById('twibbonTemplate').src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  } else {
+    alert('Hanya file JPG, JPEG, dan PNG yang diperbolehkan.');
+  }
+});
+   // Variabel global
+let scale = 1;
+let posX = 0;
+let posY = 0;
+let isDragging = false;
+let startX, startY;
+let currentImage = null;
+
+// Elemen DOM
+const uploadInput = document.getElementById('uploadInput');
+const uploadBtn = document.getElementById('uploadBtn');
+const deleteBtn = document.getElementById('deleteBtn');
+const uploadedImage = document.getElementById('uploadedImage');
+const twibbonContainer = document.getElementById('twibbonContainer');
+const imageContainer = document.getElementById('imageContainer');
+const twibbonTemplate = document.getElementById('twibbonTemplate');
+const twibbonCanvas = document.getElementById('twibbonCanvas');
+const uploadInstructions = document.querySelector('.upload-instructions');
+
+// Event listeners
+uploadBtn.addEventListener('click', () => uploadInput.click());
+uploadInput.addEventListener('change', handleImageUpload);
+deleteBtn.addEventListener('click', deleteUploadedImage);
+
+// Upload gambar
+// Function to handle image upload
+function handleImageUpload(e) {
+  const file = e.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(event) {
+      uploadedImage.src = event.target.result;
+      uploadedImage.style.display = 'block';
+      uploadInstructions.style.display = 'none';
+      uploadBtn.style.display = 'none';
+      deleteBtn.style.display = 'block';
+
+      // Enable range sliders when image is uploaded
+      enableSliders(true);
+      
+      uploadedImage.onload = function() {
+        initImagePosition();
+        setupDragAndZoom();
+      };
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+// Function to delete uploaded image
+function deleteUploadedImage() {
+  uploadedImage.src = '';
+  uploadedImage.style.display = 'none';
+  uploadInstructions.style.display = 'block';
+  uploadedImage.style.filter = 'none';
+  uploadBtn.style.display = 'block';
+  deleteBtn.style.display = 'none';
+  uploadInput.value = '';
+
+  // Disable range sliders when image is deleted
+  enableSliders(false);
+
+  // Reset filter sliders to default
+  const slidersReset = {
+    brightness: 50, contrast: 50, saturation: 50,
+    grayscale: 0, sepia: 0, smooth: 0,
+    sharpen: 50, temperature: 50, boost: 50
+  };
+
+  for (let key in slidersReset) {
+    const input = document.getElementById(key);
+    const label = document.getElementById(key + 'Val');
+    if (input && label) {
+      input.value = slidersReset[key];
+      let percentage = (input.value / input.max) * 100;
+      label.textContent = Math.round(percentage) + '%';
+    }
+  }
+
+  uploadedImage.style.filter = 'none';
+  removeDragAndZoomListeners();
+}
+
+// Function to enable/disable sliders
+function enableSliders(enable) {
+  const sliders = ['brightness', 'contrast', 'saturation', 'grayscale', 'sepia', 'smooth', 'sharpen', 'temperature', 'boost'];
+  sliders.forEach(id => {
+    const input = document.getElementById(id);
+    input.disabled = !enable;
+  });
+}
+
+// Hapus listeners
+function removeDragAndZoomListeners() {
+  imageContainer.removeEventListener('mousedown', startDrag);
+  document.removeEventListener('mousemove', drag);
+  document.removeEventListener('mouseup', endDrag);
+  imageContainer.removeEventListener('touchstart', handleTouchStart);
+  imageContainer.removeEventListener('touchmove', handleTouchMove);
+  imageContainer.removeEventListener('touchend', endDrag);
+  imageContainer.removeEventListener('wheel', handleWheel);
+}
+
+// Inisialisasi posisi
+function initImagePosition() {
+  const containerWidth = twibbonContainer.clientWidth;
+  const containerHeight = twibbonContainer.clientHeight;
+  const imgWidth = uploadedImage.naturalWidth;
+  const imgHeight = uploadedImage.naturalHeight;
+
+  const scaleX = containerWidth / imgWidth;
+  const scaleY = containerHeight / imgHeight;
+  scale = Math.max(scaleX, scaleY) * 1.1;
+
+  posX = (containerWidth - imgWidth * scale) / 2;
+  posY = (containerHeight - imgHeight * scale) / 2;
+
+  updateImageTransform();
+}
+
+function updateImageTransform() {
+  uploadedImage.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
+}
+
+// Setup gesture
+function setupDragAndZoom() {
+  imageContainer.addEventListener('mousedown', startDrag);
+  document.addEventListener('mousemove', drag);
+  document.addEventListener('mouseup', endDrag);
+  imageContainer.addEventListener('touchstart', handleTouchStart, { passive: false });
+  imageContainer.addEventListener('touchmove', handleTouchMove, { passive: false });
+  imageContainer.addEventListener('touchend', endDrag);
+  imageContainer.addEventListener('wheel', handleWheel, { passive: false });
+}
+
+function startDrag(e) {
+  if (uploadedImage.style.display === 'none') return;
+  isDragging = true;
+  startX = e.clientX || e.touches[0].clientX;
+  startY = e.clientY || e.touches[0].clientY;
+  uploadedImage.style.cursor = 'grabbing';
+  e.preventDefault();
+}
+
+function drag(e) {
+  if (!isDragging) return;
+  const clientX = e.clientX || e.touches[0].clientX;
+  const clientY = e.clientY || e.touches[0].clientY;
+  posX += clientX - startX;
+  posY += clientY - startY;
+  startX = clientX;
+  startY = clientY;
+  updateImageTransform();
+  e.preventDefault();
+}
+
+function endDrag() {
+  isDragging = false;
+  uploadedImage.style.cursor = 'grab';
+}
+
+// Zoom sentuh dan scroll
+let initialDistance = null;
+function handleTouchStart(e) {
+  if (e.touches.length === 1) {
+    startDrag(e);
+  } else if (e.touches.length === 2) {
+    e.preventDefault();
+  }
+}
+
+function handleTouchMove(e) {
+  if (e.touches.length === 1) {
+    drag(e);
+  } else if (e.touches.length === 2) {
+    handlePinchZoom(e);
+    e.preventDefault();
+  }
+}
+
+function handlePinchZoom(e) {
+  const touch1 = e.touches[0];
+  const touch2 = e.touches[1];
+  const currentDistance = Math.hypot(
+    touch2.clientX - touch1.clientX,
+    touch2.clientY - touch1.clientY
+  );
+  if (initialDistance === null) {
+    initialDistance = currentDistance;
+  } else {
+    const zoomFactor = currentDistance / initialDistance;
+    const centerX = (touch1.clientX + touch2.clientX) / 2;
+    const centerY = (touch1.clientY + touch2.clientY) / 2;
+    const containerRect = twibbonContainer.getBoundingClientRect();
+    const relX = centerX - containerRect.left;
+    const relY = centerY - containerRect.top;
+    const imgX = (relX - posX) / scale;
+    const imgY = (relY - posY) / scale;
+    const newScale = scale * zoomFactor;
+    scale = Math.max(0.2, Math.min(newScale, 10));
+    posX = relX - imgX * scale;
+    posY = relY - imgY * scale;
+    updateImageTransform();
+    initialDistance = currentDistance;
+  }
+}
+
+function handleWheel(e) {
+  if (uploadedImage.style.display === 'none') return;
+  e.preventDefault();
+  const containerRect = twibbonContainer.getBoundingClientRect();
+  const relX = e.clientX - containerRect.left;
+  const relY = e.clientY - containerRect.top;
+  const imgX = (relX - posX) / scale;
+  const imgY = (relY - posY) / scale;
+  const delta = e.deltaY > 0 ? -0.1 : 0.1;
+  const newScale = scale + delta;
+  scale = Math.max(0.2, Math.min(newScale, 10));
+  posX = relX - imgX * scale;
+  posY = relY - imgY * scale;
+  updateImageTransform();
+}
+
+    // Fungsi untuk mengakhiri drag
+    function endDrag() {
+      isDragging = false;
+      initialDistance = null;
+      
+      // Kembalikan cursor ke semula
+      if (uploadedImage.style.display !== 'none') {
+        uploadedImage.style.cursor = 'grab';
+      }
+    }
+
+    // Fungsi untuk mengunduh twibbon
+let isDownloading = false; // untuk mencegah spam
+
+function downloadTwibbon() {
+  if (isDownloading) return; // blok jika sedang proses
+  if (uploadedImage.style.display === 'none') {
+    alert('Silakan upload foto terlebih dahulu!');
+    return;
+  }
+
+  isDownloading = true;
+
+  const downloadBtn = document.getElementById('downloadBtn');
+  const originalHTML = downloadBtn.innerHTML;
+
+  // Tampilkan loading
+  downloadBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span> Memproses...`;
+  downloadBtn.disabled = true;
+
+  // Delay 1.5 detik
+  setTimeout(() => {
+    // Set ukuran canvas sesuai dengan template
+    twibbonCanvas.width = twibbonTemplate.naturalWidth || twibbonTemplate.width;
+    twibbonCanvas.height = twibbonTemplate.naturalHeight || twibbonTemplate.height;
+
+    const ctx = twibbonCanvas.getContext('2d');
+
+    const containerRect = twibbonContainer.getBoundingClientRect();
+    const containerScaleX = twibbonCanvas.width / containerRect.width;
+    const containerScaleY = twibbonCanvas.height / containerRect.height;
+
+    ctx.save();
+    ctx.translate(posX * containerScaleX, posY * containerScaleY);
+    ctx.scale(scale * containerScaleX, scale * containerScaleY);
+    ctx.filter = uploadedImage.style.filter || 'none';
+    ctx.drawImage(uploadedImage, 0, 0);
+    ctx.restore();
+
+    ctx.drawImage(twibbonTemplate, 0, 0, twibbonCanvas.width, twibbonCanvas.height);
+const dataURL = twibbonCanvas.toDataURL('image/png');
+const link = document.createElement('a');
+const randomName = `twibbon-${Date.now()}-${Math.floor(Math.random() * 10000)}.png`;
+link.download = randomName;
+link.href = dataURL;
+link.click();
+
+// Tampilkan hasil ke modal
+document.getElementById('resultImage').src = dataURL;
+const modal = new bootstrap.Modal(document.getElementById('twibbonModal'));
+modal.show();
+
+// Hitung ukuran base64 dalam byte
+const base64Length = dataURL.length - 'data:image/png;base64,'.length;
+const sizeInBytes = Math.ceil(base64Length * 3 / 4); // konversi base64 ke byte
+const maxSize = 500 * 1024; // 500KB batas maksimum
+
+if (sizeInBytes <= maxSize) {
+  // Simpan ke localStorage jika kecil
+  const twibbonData = {
+    name: randomName,
+    image: dataURL,
+    time: Date.now()
+  };
+
+  let savedTwibbons = JSON.parse(localStorage.getItem("twibbons") || "[]");
+  savedTwibbons.push(twibbonData);
+  localStorage.setItem("twibbons", JSON.stringify(savedTwibbons));
+
+  renderTwibbonList();
+} else {
+  alert("Twibbon berhasil diunduh, tetapi tidak disimpan otomatis karena ukuran terlalu besar. maks 5mb");
+}
+
+// Reset tombol
+downloadBtn.innerHTML = originalHTML;
+downloadBtn.disabled = false;
+isDownloading = false;
+}, 1500);
+}
+
+    // Pastikan template sudah dimuat sebelum mengizinkan download
+    twibbonTemplate.onload = function() {
+      console.log('Template loaded');
+    };
+  </script>
+  <script>
+
+function renderTwibbonList() {
+  const listContainer = document.getElementById("twibbonList");
+  listContainer.innerHTML = "";
+  let savedTwibbons = JSON.parse(localStorage.getItem("twibbons") || "[]");
+
+  savedTwibbons.forEach((item, index) => {
+    const div = document.createElement("div");
+    div.className = "twibbon-item";
+    div.onclick = () => showTwibbonModal(item);
+
+    div.innerHTML = `
+      <div class="number">${index + 1}</div>
+      <img src="${item.image}" alt="Twibbon">
+      <div class="name">${item.name}</div>
+     <div class="delete" onclick="event.stopPropagation(); deleteTwibbon(${index})">
+  <i class="bi bi-trash-fill"></i>
+</div>
+       `;
+    listContainer.appendChild(div);
+  });
+  updateStorageInfo();
+}
+let indexToDelete = null;
+function deleteTwibbon(index) {
+  indexToDelete = index;
+
+  // Reset tampilan
+  document.querySelector("#deleteTwibbonModal .modal-body p").style.display = "block";
+  document.getElementById("deleteStatus").style.display = "none";
+  document.getElementById("deleteSuccess").style.display = "none";
+  document.getElementById("deleteError").style.display = "none";
+  document.querySelector("#deleteTwibbonModal .modal-footer").style.display = "flex";
+
+  // Tampilkan modal
+  const modal = new bootstrap.Modal(document.getElementById("deleteTwibbonModal"));
+  modal.show();
+}
+
+document.getElementById("confirmDeleteBtn").onclick = function () {
+  const confirmBtn = this;
+  const modalBodyText = document.querySelector("#deleteTwibbonModal .modal-body p");
+  const deleteStatus = document.getElementById("deleteStatus");
+  const deleteSuccess = document.getElementById("deleteSuccess");
+  const deleteError = document.getElementById("deleteError");
+  const footer = document.querySelector("#deleteTwibbonModal .modal-footer");
+
+  // Sembunyikan konfirmasi dan tombol
+  modalBodyText.style.display = "none";
+  footer.style.display = "none";
+
+  // Cek koneksi
+  if (!navigator.onLine) {
+    deleteError.style.display = "block";
+    setTimeout(() => {
+      footer.style.display = "flex";
+    }, 1200);
+    return;
+  }
+
+  // Tampilkan loading
+  deleteStatus.style.display = "block";
+
+  setTimeout(() => {
+    try {
+      let saved = JSON.parse(localStorage.getItem("twibbons") || "[]");
+      saved.splice(indexToDelete, 1);
+      localStorage.setItem("twibbons", JSON.stringify(saved));
+      renderTwibbonList();
+
+      // Tampilkan sukses
+      deleteStatus.style.display = "none";
+      deleteSuccess.style.display = "block";
+
+      setTimeout(() => {
+        const modalEl = document.getElementById("deleteTwibbonModal");
+        const modalInstance = bootstrap.Modal.getInstance(modalEl);
+        modalInstance.hide();
+
+        // Reset
+        footer.style.display = "flex";
+        confirmBtn.disabled = false;
+        indexToDelete = null;
+      }, 1000);
+    } catch (error) {
+      deleteStatus.style.display = "none";
+      deleteError.style.display = "block";
+      setTimeout(() => {
+        footer.style.display = "flex";
+      }, 1200);
+      confirmBtn.disabled = false;
+    }
+  }, 1200);
+};
+function showTwibbonModal(item) {
+  const img = document.getElementById("resultImage");
+  img.src = item.image;
+
+  const downloadBtn = document.getElementById("downloadTwibbonBtn");
+  const downloadText = downloadBtn.querySelector("span");
+  const downloadIcon = downloadBtn.querySelector("i");
+
+  // Atur href dan download attribute
+  downloadBtn.href = item.image;
+  downloadBtn.download = item.name + ".png";
+
+  // Reset loading jika sebelumnya sudah
+  downloadBtn.classList.remove("disabled");
+  downloadIcon.className = "bi bi-download me-1";
+  downloadText.textContent = "Download";
+
+  // Set event click handler
+  downloadBtn.onclick = function (e) {
+    e.preventDefault(); // cegah langsung download
+
+    // Tampilkan loading
+    downloadBtn.classList.add("disabled");
+    downloadIcon.className = "spinner-border spinner-border-sm me-2";
+    downloadText.textContent = "Mengunduh...";
+
+    setTimeout(() => {
+      // Buat elemen <a> untuk memicu download
+      const link = document.createElement("a");
+      link.href = item.image;
+      link.download = item.name + ".png";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      // Kembalikan tombol ke semula
+      downloadBtn.classList.remove("disabled");
+      downloadIcon.className = "bi bi-download me-1";
+      downloadText.textContent = "Download";
+    }, 1500);
+  };
+
+  const modal = new bootstrap.Modal(document.getElementById("twibbonModal"));
+  modal.show();
+}
+  document.addEventListener("DOMContentLoaded", renderTwibbonList);
+</script>
+  <script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script>
+</body>
+</html>
